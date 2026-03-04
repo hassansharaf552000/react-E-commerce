@@ -1,0 +1,419 @@
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+/* DGA Design System Tokens */
+:root {
+  /* Font families */
+  --dga-font-display: "IBM Plex Sans Arabic";
+  --dga-font-text: "IBM Plex Sans Arabic";
+
+  /* Font weights */
+  --dga-font-regular: 400;
+  --dga-font-medium: 500;
+  --dga-font-semibold: 600;
+  --dga-font-bold: 700;
+
+  /* Typography - Display sizes */
+  --dga-display-2xl-size: 72px;
+  --dga-display-2xl-line: 90px;
+  --dga-display-2xl-track: -2px;
+  --dga-display-xl-size: 60px;
+  --dga-display-xl-line: 72px;
+  --dga-display-xl-track: -2px;
+  --dga-display-lg-size: 48px;
+  --dga-display-lg-line: 60px;
+  --dga-display-lg-track: -2px;
+  --dga-display-md-size: 36px;
+  --dga-display-md-line: 44px;
+  --dga-display-md-track: -2px;
+  --dga-display-sm-size: 30px;
+  --dga-display-sm-line: 38px;
+  --dga-display-sm-track: 0px;
+  --dga-display-xs-size: 24px;
+  --dga-display-xs-line: 32px;
+  --dga-display-xs-track: 0px;
+
+  /* Typography - Text sizes */
+  --dga-text-xl-size: 20px;
+  --dga-text-xl-line: 30px;
+  --dga-text-lg-size: 18px;
+  --dga-text-lg-line: 28px;
+  --dga-text-md-size: 16px;
+  --dga-text-md-line: 24px;
+  --dga-text-sm-size: 14px;
+  --dga-text-sm-line: 20px;
+  --dga-text-xs-size: 12px;
+  --dga-text-xs-line: 18px;
+  --dga-text-2xs-size: 10px;
+  --dga-text-2xs-line: 14px;
+
+  /* Spacing scale (px) */
+  --dga-space-0: 0px;
+  --dga-space-0-5: 2px;
+  --dga-space-1: 4px;
+  --dga-space-1-5: 6px;
+  --dga-space-2: 8px;
+  --dga-space-3: 12px;
+  --dga-space-4: 16px;
+  --dga-space-5: 20px;
+  --dga-space-6: 24px;
+  --dga-space-8: 32px;
+  --dga-space-10: 40px;
+  --dga-space-12: 48px;
+  --dga-space-16: 64px;
+  --dga-space-20: 80px;
+  --dga-space-24: 96px;
+  --dga-space-32: 128px;
+  --dga-space-40: 160px;
+  --dga-space-48: 192px;
+  --dga-space-56: 224px;
+  --dga-space-64: 256px;
+  --dga-space-80: 320px;
+  --dga-space-96: 384px;
+  --dga-space-120: 480px;
+  --dga-space-140: 560px;
+  --dga-space-160: 640px;
+  --dga-space-180: 720px;
+  --dga-space-192: 768px;
+  --dga-space-256: 1024px;
+  --dga-space-320: 1280px;
+  --dga-space-360: 1440px;
+  --dga-space-400: 1600px;
+  --dga-space-480: 1920px;
+
+  /* Spacing aliases */
+  --dga-space-none: 0px;
+  --dga-space-xxs: 2px;
+  --dga-space-xs: 4px;
+  --dga-space-md: 8px;
+  --dga-space-lg: 12px;
+  --dga-space-xl: 16px;
+  --dga-space-2xl: 20px;
+  --dga-space-3xl: 24px;
+  --dga-space-4xl: 32px;
+  --dga-space-5xl: 40px;
+  --dga-space-6xl: 48px;
+  --dga-space-7xl: 64px;
+  --dga-space-8xl: 80px;
+  --dga-space-9xl: 96px;
+  --dga-space-10xl: 128px;
+  --dga-space-11xl: 160px;
+
+  /* Radius */
+  --dga-radius-none: 0px;
+  --dga-radius-xs: 2px;
+  --dga-radius-sm: 4px;
+  --dga-radius-md: 8px;
+  --dga-radius-lg: 16px;
+  --dga-radius-xl: 24px;
+  --dga-radius-full: 9999px;
+
+  /* Shadows */
+  --dga-shadow-xs: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+  --dga-shadow-3xl: 0 32px 64px -12px rgba(16, 24, 40, 0.14);
+
+  /* Layout */
+  --dga-container-max-desktop: 1280px;
+  --dga-container-padding-desktop: 32px;
+  --dga-container-padding-mobile: 16px;
+  --dga-paragraph-max-width: 720px;
+
+  /* Neutral palette */
+  --dga-neutral-25: #fcfcfd;
+  --dga-neutral-50: #f9fafb;
+  --dga-neutral-100: #f3f4f6;
+  --dga-neutral-200: #e5e7eb;
+  --dga-neutral-300: #d2d6db;
+  --dga-neutral-400: #9da4ae;
+  --dga-neutral-500: #6c737f;
+  --dga-neutral-600: #4d5761;
+  --dga-neutral-700: #384250;
+  --dga-neutral-800: #1f2a37;
+  --dga-neutral-900: #111927;
+  --dga-neutral-950: #0d121c;
+
+  /* DGA brand palette */
+  --dga-25: #f7fdf9;
+  --dga-50: #f3fcf6;
+  --dga-100: #dff6e7;
+  --dga-200: #b8eacb;
+  --dga-300: #88d8ad;
+  --dga-400: #54c08a;
+  --dga-500: #25935f;
+  --dga-600: #1b8354;
+  --dga-700: #166a45;
+  --dga-800: #14573a;
+  --dga-900: #104631;
+  --dga-950: #092a1e;
+
+  /* Gold palette */
+  --dga-gold-25: #fffef7;
+  --dga-gold-50: #fffef2;
+  --dga-gold-100: #fffce6;
+  --dga-gold-200: #fcf3bd;
+  --dga-gold-300: #fae996;
+  --dga-gold-400: #f7d54d;
+  --dga-gold-500: #f5bd02;
+  --dga-gold-600: #dba102;
+  --dga-gold-700: #b87b02;
+  --dga-gold-800: #945c01;
+  --dga-gold-900: #6e3c00;
+  --dga-gold-950: #472400;
+
+  /* Lavender palette */
+  --dga-lavender-25: #fefcff;
+  --dga-lavender-50: #f9f5fa;
+  --dga-lavender-100: #f2e9f5;
+  --dga-lavender-200: #e1cce8;
+  --dga-lavender-300: #ccadd9;
+  --dga-lavender-400: #a57bba;
+  --dga-lavender-500: #80519f;
+  --dga-lavender-600: #6d428f;
+  --dga-lavender-700: #532d75;
+  --dga-lavender-800: #3d1d5e;
+  --dga-lavender-900: #281047;
+  --dga-lavender-950: #16072e;
+
+  /* Success palette */
+  --dga-success-25: #f6fef9;
+  --dga-success-50: #ecfdf3;
+  --dga-success-100: #dcfae6;
+  --dga-success-200: #abefc6;
+  --dga-success-300: #75e0a7;
+  --dga-success-400: #47cd89;
+  --dga-success-500: #17b26a;
+  --dga-success-600: #079455;
+  --dga-success-700: #067647;
+  --dga-success-800: #085d3a;
+  --dga-success-900: #074d31;
+  --dga-success-950: #053321;
+
+  /* Warning palette */
+  --dga-warning-25: #fffcf5;
+  --dga-warning-50: #fffaeb;
+  --dga-warning-100: #fef0c7;
+  --dga-warning-200: #fedf89;
+  --dga-warning-300: #fec84b;
+  --dga-warning-400: #fdb022;
+  --dga-warning-500: #f79009;
+  --dga-warning-600: #dc6803;
+  --dga-warning-700: #b54708;
+  --dga-warning-800: #93370d;
+  --dga-warning-900: #7a2e0e;
+  --dga-warning-950: #4e1d09;
+
+  /* Error palette */
+  --dga-error-25: #fffbfa;
+  --dga-error-50: #fef3f2;
+  --dga-error-100: #fee4e2;
+  --dga-error-200: #fecdca;
+  --dga-error-300: #fda29b;
+  --dga-error-400: #f97066;
+  --dga-error-500: #f04438;
+  --dga-error-600: #d92d20;
+  --dga-error-700: #b42318;
+  --dga-error-800: #912018;
+  --dga-error-900: #7a271a;
+  --dga-error-950: #55160c;
+
+  /* Info palette */
+  --dga-info-25: #f5faff;
+  --dga-info-50: #ecfdf3;
+  --dga-info-100: #d1e9ff;
+  --dga-info-200: #b2ddff;
+  --dga-info-300: #84caff;
+  --dga-info-400: #53b1fd;
+  --dga-info-500: #2e90fa;
+  --dga-info-600: #1570ef;
+  --dga-info-700: #175cd3;
+  --dga-info-800: #1849a9;
+  --dga-info-900: #194185;
+  --dga-info-950: #102a56;
+
+  /* Alias tokens */
+  --dga-text-display: #1f2a37;
+  --dga-text-primary: #0d121c;
+  --dga-text-secondary: #6c737f;
+  --dga-text-tertiary: #4d5761;
+  --dga-text-default: #161616;
+  --dga-text-on-color: #ffffff;
+  --dga-text-on-color-secondary: #ffffffb2;
+  --dga-text-on-color-tertiary: #ffffff99;
+  --dga-text-brand-primary: #14573a;
+  --dga-text-brand-secondary: #1b8354;
+  --dga-text-brand-tertiary: #25935f;
+  --dga-text-error: #b42318;
+  --dga-text-warning: #b54708;
+  --dga-text-success: #067647;
+  --dga-text-info: #175cd3;
+
+  --dga-bg-body: #f9fafb;
+  --dga-bg-card: #ffffff;
+  --dga-bg-neutral-100: #f3f4f6;
+  --dga-bg-success: #079455;
+  --dga-bg-brand-light: #f3fcf6;
+  --dga-bg-success-light: #ecfdf3;
+  --dga-bg-warning-light: #fffaeb;
+  --dga-bg-error-light: #fef3f2;
+  --dga-bg-sa-flag: #074d31;
+  --dga-bg-notification-white: #ffffff;
+
+  --dga-border-brand: #1b8354;
+  --dga-border-neutral-primary: #d2d6db;
+  --dga-border-neutral-secondary: #e5e7eb;
+
+  --dga-icon-default: #161616;
+  --dga-icon-primary: #1b8354;
+  --dga-icon-on-color: #ffffff;
+  --dga-icon-success: #067647;
+
+  --dga-tag-text-success: #085d3a;
+  --dga-tag-text-warning: #93370d;
+  --dga-tag-text-error: #912018;
+  --dga-tag-bg-success-light: #ecfdf3;
+  --dga-tag-bg-warning-light: #fffaeb;
+  --dga-tag-bg-error-light: #fef3f2;
+  --dga-tag-border-success-light: #abefc6;
+  --dga-tag-border-warning-light: #fedf89;
+  --dga-tag-border-error-light: #fecdca;
+  --dga-tag-icon-warning: #93370d;
+  --dga-tag-icon-error: #912018;
+  --border: #e5e7eb;
+}
+
+/* ========================
+   Base & Typography
+   ======================== */
+body {
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  color: #161616;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+
+/* ========================
+   Layout
+   ======================== */
+.content-wrapper {
+  direction: rtl;
+  padding-inline: 80px;
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .content-wrapper { padding-inline: 40px; }
+}
+@media (max-width: 576px) {
+  .content-wrapper { padding-inline: 16px; }
+}
+
+.cursor-pointer { cursor: pointer; }
+
+.bg-neutral { background-color: #f3f4f6; }
+
+.default-color { color: #161616; }
+.primary-color { color: #384250; }
+.text-success { color: #1b8354 !important; font-weight: 600; }
+
+.wfull { width: auto; }
+@media (max-width: 768px) { .wfull { width: 100%; } }
+
+/* ========================
+   Buttons
+   ======================== */
+.dga-primary-btn {
+  font-size: 16px;
+  border-radius: 0.25rem;
+  color: #fff;
+  background-color: #1b8354;
+  border: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dga-primary-btn:hover,
+.dga-primary-btn:active {
+  color: #fff;
+  background-color: #166a45;
+}
+
+.dga-primary-btn:disabled {
+  background-color: #e5e7eb;
+  color: #9da4ae;
+  cursor: not-allowed;
+}
+
+.dga-sec-btn {
+  font-size: 16px;
+  border-radius: 0.25rem;
+  color: #161616;
+  background-color: #f3f4f6;
+  border: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.dga-sec-btn:hover {
+  background-color: #e5e7eb;
+}
+
+/* ========================
+   Forms
+   ======================== */
+label {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 12px !important;
+  color: #161616 !important;
+  display: block;
+}
+
+select,
+textarea,
+input {
+  border: 1px solid transparent !important;
+  outline: 0;
+  background-color: #f3f4f6 !important;
+  color: #6c737f !important;
+}
+
+input:hover, textarea:hover, select:hover {
+  border: 1px solid #9da4ae !important;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: 1px solid #9da4ae !important;
+  border-bottom: #0d121c 2px solid !important;
+  border-radius: 4px 4px 0 0 !important;
+  background-color: white !important;
+  color: #384250 !important;
+}
+
+/* ========================
+   Spacing utilities
+   ======================== */
+.margin-top-24 { margin-top: 24px; }
+.margin-top-32 { margin-top: 32px; }
+.margin-top-40 { margin-top: 40px; }
+.margin-bottom-24 { margin-bottom: 24px; }
+.margin-bottom-32 { margin-bottom: 32px; }
+

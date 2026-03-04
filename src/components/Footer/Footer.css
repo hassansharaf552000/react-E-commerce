@@ -1,0 +1,44 @@
+/* ========================
+   Footer
+   ======================== */
+.site-footer {
+  padding-top: 56px;
+  padding-bottom: 40px;
+  background: #074d31;
+  color: #fff;
+}
+
+.site-footer li {
+  font-size: 14px;
+}
+
+.footer-border {
+  border-bottom: 1px solid #ffffff4d;
+}
+
+.footer-rights {
+  padding-top: 48px;
+}
+
+.footer-list {
+  color: white;
+}
+
+.footer-list:hover {
+  text-decoration: underline !important;
+  color: #ffffffcc !important;
+}
+
+.padding-social {
+  border-radius: 4px;
+  border: 1px solid #ffffff4d;
+  padding: 6px;
+}
+
+.padding-social:hover {
+  background-color: #ffffff4d;
+}
+
+.margin-bottom-16 {
+  margin-bottom: 16px;
+}
