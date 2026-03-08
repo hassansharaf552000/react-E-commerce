@@ -22,7 +22,6 @@ export default function Footer() {
               <ul className="d-flex flex-column gap-2 p-0" style={{ listStyle: 'none' }}>
                 <li><Link to="/" className="text-white text-decoration-none footer-list">الرئيسية</Link></li>
                 <li><Link to="/products" className="text-white text-decoration-none footer-list">المنتجات</Link></li>
-                <li><Link to="/offers" className="text-white text-decoration-none footer-list">العروض</Link></li>
                 <li><Link to="/about" className="text-white text-decoration-none footer-list">من نحن</Link></li>
                 <li><Link to="/contact" className="text-white text-decoration-none footer-list">اتصل بنا</Link></li>
               </ul>

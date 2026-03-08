@@ -1,48 +1,143 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
+import type { RegisterValues } from '../../types';
+import './Auth.css';
+
+const registerSchema = Yup.object({
+  name: Yup.string()
+    .min(2, 'الاسم يجب أن يكون حرفين على الأقل')
+    .required('الاسم الكامل مطلوب'),
+  email: Yup.string()
+    .email('البريد الإلكتروني غير صحيح')
+    .required('البريد الإلكتروني مطلوب'),
+  password: Yup.string()
+    .min(8, 'كلمة المرور يجب أن تكون 8 أحرف على الأقل')
+    .required('كلمة المرور مطلوبة'),
+});
 
 export default function Register() {
+  const { register } = useAuth();
+  const navigate = useNavigate();
+  const [apiError, setApiError] = useState<string | null>(null);
+
+  const formik = useFormik<RegisterValues>({
+    initialValues: { name: '', email: '', password: '' },
+    validationSchema: registerSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      setApiError(null);
+      try {
+        await register(values);
+        navigate('/');
+      } catch (err: unknown) {
+        const axiosErr = err as { response?: { data?: { message?: string } }; message?: string };
+        const message =
+          axiosErr?.response?.data?.message ||
+          axiosErr?.message ||
+          'حدث خطأ، يرجى المحاولة مرة أخرى';
+        setApiError(message);
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  });
+
   return (
-    <div
-      className="content-wrapper d-flex align-items-center justify-content-center"
-      style={{ paddingBlock: 60 }}
-    >
-      <div
-        className="card p-4 p-md-5"
-        style={{ width: '100%', maxWidth: 480, borderRadius: 16 }}
-      >
-        <div className="text-center mb-4">
-          <span style={{ fontSize: 36 }}>📝</span>
-          <h2 style={{ fontWeight: 700, marginTop: 8, marginBottom: 4 }}>إنشاء حساب جديد</h2>
-          <p style={{ color: '#384250', fontSize: 14 }}>انضم إلى MyStore واستمتع بأفضل العروض</p>
+    <div className="auth-page">
+      <div className="auth-card">
+
+        {/* Brand */}
+        <Link to="/" className="auth-brand">
+          <div className="auth-brand-logo">M</div>
+          <span className="auth-brand-name">MyStore</span>
+        </Link>
+        <div className="auth-divider" />
+
+        {/* Heading */}
+        <div className="auth-heading">
+          <div className="auth-icon">📝</div>
+          <h2>إنشاء حساب جديد</h2>
+          <p>انضم إلى MyStore واستمتع بأفضل العروض</p>
         </div>
 
-        <form>
-          <div className="mb-3">
-            <label htmlFor="regName">الاسم الكامل</label>
-            <input id="regName" type="text" className="form-control" placeholder="أدخل اسمك الكامل" required />
+        {apiError && (
+          <div className="alert alert-danger" role="alert" style={{ borderRadius: 8, fontSize: 14 }}>
+            {apiError}
           </div>
-          <div className="mb-3">
-            <label htmlFor="regEmail">البريد الإلكتروني</label>
-            <input id="regEmail" type="email" className="form-control" placeholder="example@email.com" required />
+        )}
+
+        <form onSubmit={formik.handleSubmit} noValidate>
+          <div className="auth-field">
+            <label htmlFor="name">الاسم الكامل</label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              className={`form-control ${
+                formik.touched.name && formik.errors.name ? 'is-invalid' : ''
+              }`}
+              placeholder="أدخل اسمك الكامل"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.name && formik.errors.name && (
+              <div className="invalid-feedback">{formik.errors.name}</div>
+            )}
           </div>
-          <div className="mb-3">
-            <label htmlFor="regPhone">رقم الجوال</label>
-            <input id="regPhone" type="tel" className="form-control" placeholder="05xxxxxxxx" required />
+
+          <div className="auth-field">
+            <label htmlFor="email">البريد الإلكتروني</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              className={`form-control ${
+                formik.touched.email && formik.errors.email ? 'is-invalid' : ''
+              }`}
+              placeholder="example@email.com"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.email && formik.errors.email && (
+              <div className="invalid-feedback">{formik.errors.email}</div>
+            )}
           </div>
-          <div className="mb-4">
-            <label htmlFor="regPassword">كلمة المرور</label>
-            <input id="regPassword" type="password" className="form-control" placeholder="8 أحرف على الأقل" required />
+
+          <div className="auth-field">
+            <label htmlFor="password">كلمة المرور</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              className={`form-control ${
+                formik.touched.password && formik.errors.password ? 'is-invalid' : ''
+              }`}
+              placeholder="8 أحرف على الأقل"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.password && formik.errors.password && (
+              <div className="invalid-feedback">{formik.errors.password}</div>
+            )}
           </div>
-          <button type="submit" className="dga-primary-btn w-100" style={{ borderRadius: 8 }}>
-            إنشاء الحساب
+
+          <button
+            type="submit"
+            className="auth-submit-btn"
+            disabled={formik.isSubmitting}
+          >
+            {formik.isSubmitting ? 'جارٍ إنشاء الحساب...' : 'إنشاء الحساب'}
           </button>
         </form>
 
-        <p className="text-center mt-3 mb-0" style={{ fontSize: 14, color: '#384250' }}>
+        <p className="auth-footer-link">
           لديك حساب بالفعل؟{' '}
-          <Link to="/auth/login" style={{ color: '#1b8354', fontWeight: 600 }}>
-            تسجيل الدخول
-          </Link>
+          <Link to="/auth/login">تسجيل الدخول</Link>
         </p>
       </div>
     </div>

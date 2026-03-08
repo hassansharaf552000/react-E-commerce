@@ -1,10 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { useCategories } from '../../context/CategoriesContext';
 import './Navbar.css';
 
 export default function Navbar() {
   const [offcanvasOpen, setOffcanvasOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  const { categories, fetchCategories } = useCategories();
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   const toggleSubmenu = (key: string) => {
     setOpenSubmenu((prev) => (prev === key ? null : key));
@@ -74,33 +80,22 @@ export default function Navbar() {
                   <div className="mega-inner p-4">
                     <ul className="list-unstyled mega-list row g-4 px-5">
                       <div className="col-12 col-lg-6 p-0 mt-4">
-                        <li>
-                          <Link className="dropdown-item nav-font-size" to="/products?category=electronics">
-                            الإلكترونيات
-                          </Link>
-                        </li>
-                        <li>
-                          <Link className="dropdown-item nav-font-size" to="/products?category=clothing">
-                            الملابس
-                          </Link>
-                        </li>
-                        <li>
-                          <Link className="dropdown-item nav-font-size" to="/products?category=home">
-                            المنزل والمطبخ
-                          </Link>
-                        </li>
+                        {categories.slice(0, Math.ceil(categories.length / 2)).map((cat) => (
+                          <li key={cat._id}>
+                            <Link className="dropdown-item nav-font-size" to={`/products?category=${cat._id}`}>
+                              {cat.name}
+                            </Link>
+                          </li>
+                        ))}
                       </div>
                       <div className="col-12 col-lg-6 p-0 mt-4">
-                        <li>
-                          <Link className="dropdown-item nav-font-size" to="/products?category=beauty">
-                            العناية والجمال
-                          </Link>
-                        </li>
-                        <li>
-                          <Link className="dropdown-item nav-font-size" to="/products?category=sports">
-                            الرياضة
-                          </Link>
-                        </li>
+                        {categories.slice(Math.ceil(categories.length / 2)).map((cat) => (
+                          <li key={cat._id}>
+                            <Link className="dropdown-item nav-font-size" to={`/products?category=${cat._id}`}>
+                              {cat.name}
+                            </Link>
+                          </li>
+                        ))}
                         <li>
                           <Link className="dropdown-item nav-font-size" to="/products">
                             جميع المنتجات
@@ -112,12 +107,6 @@ export default function Navbar() {
                 </div>
               </li>
 
-              {/* Offers */}
-              <li className="nav-item">
-                <NavLink className="nav-link p-navbar nav-font-size" to="/offers" data-page="offers">
-                  العروض
-                </NavLink>
-              </li>
 
               {/* About */}
               <li className="nav-item">
@@ -197,20 +186,11 @@ export default function Navbar() {
                 >▾</span>
               </button>
               <div className={`collapse submenu${openSubmenu === 'products' ? ' show' : ''}`}>
-                <Link className="fw-semibold text-decoration-none ms-3" to="/products?category=electronics" onClick={() => setOffcanvasOpen(false)}>الإلكترونيات</Link>
-                <Link className="fw-semibold text-decoration-none ms-3" to="/products?category=clothing" onClick={() => setOffcanvasOpen(false)}>الملابس</Link>
-                <Link className="fw-semibold text-decoration-none ms-3" to="/products?category=home" onClick={() => setOffcanvasOpen(false)}>المنزل والمطبخ</Link>
-                <Link className="fw-semibold text-decoration-none ms-3" to="/products?category=beauty" onClick={() => setOffcanvasOpen(false)}>العناية والجمال</Link>
-                <Link className="fw-semibold text-decoration-none ms-3" to="/products?category=sports" onClick={() => setOffcanvasOpen(false)}>الرياضة</Link>
+                {categories.map((cat) => (
+                  <Link key={cat._id} className="fw-semibold text-decoration-none ms-3" to={`/products?category=${cat._id}`} onClick={() => setOffcanvasOpen(false)}>{cat.name}</Link>
+                ))}
                 <Link className="fw-semibold text-decoration-none ms-3" to="/products" onClick={() => setOffcanvasOpen(false)}>جميع المنتجات</Link>
               </div>
-            </div>
-
-            {/* Offers */}
-            <div className="nav__item" aria-expanded="false">
-              <Link className="nav__btn fw-semibold default-color text-decoration-none" to="/offers" onClick={() => setOffcanvasOpen(false)}>
-                العروض
-              </Link>
             </div>
 
             {/* About */}

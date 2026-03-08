@@ -2,7 +2,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import Home from './pages/Home/Home';
 import Products from './pages/Products/Products';
-import Offers from './pages/Offers/Offers';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
 import Cart from './pages/Cart/Cart';
@@ -18,19 +17,14 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: 'products', element: <Products /> },
-      { path: 'offers', element: <Offers /> },
       { path: 'about', element: <About /> },
       { path: 'contact', element: <Contact /> },
       { path: 'cart', element: <Cart /> },
-      {
-        path: 'auth',
-        children: [
-          { path: 'login', element: <Login /> },
-          { path: 'register', element: <Register /> },
-        ],
-      },
     ],
   },
+  { path: 'auth/login', element: <Login /> },
+  { path: 'auth/register', element: <Register /> },
+  { path: '*', element: <Notfound /> },
 ]);
 
 export default function AppRouter() {
