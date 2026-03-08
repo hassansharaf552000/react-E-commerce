@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
+import AuthGuard from './components/AuthGuard/AuthGuard';
 import Home from './pages/Home/Home';
 import Products from './pages/Products/Products';
 import About from './pages/About/About';
@@ -12,7 +13,11 @@ import Notfound from './components/Notfound/Notfound';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Layout />,
+    element: (
+      <AuthGuard>
+        <Layout />
+      </AuthGuard>
+    ),
     errorElement: <Notfound />,
     children: [
       { index: true, element: <Home /> },

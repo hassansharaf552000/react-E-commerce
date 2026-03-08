@@ -1,12 +1,35 @@
-import { useState, useEffect } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useCategories } from '../../context/CategoriesContext';
+import { useAuth } from '../../context/AuthContext';
 import './Navbar.css';
 
 export default function Navbar() {
   const [offcanvasOpen, setOffcanvasOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const accountRef = useRef<HTMLDivElement>(null);
   const { categories, fetchCategories } = useCategories();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    setAccountOpen(false);
+    setOffcanvasOpen(false);
+    navigate('/auth/login');
+  };
+
+  // Close account dropdown when clicking outside
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (accountRef.current && !accountRef.current.contains(e.target as Node)) {
+        setAccountOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
 
   useEffect(() => {
     fetchCategories();
@@ -43,9 +66,56 @@ export default function Navbar() {
             <NavLink to="/cart" className="text-decoration-none default-color mx-2 nav-font-size" aria-label="Cart">
               🛒 <span style={{ fontSize: 13 }}>السلة</span>
             </NavLink>
-            <NavLink to="/auth/login" className="text-decoration-none default-color mx-2 nav-font-size" aria-label="Account">
-              👤 <span style={{ fontSize: 13 }}>حسابي</span>
-            </NavLink>
+
+            {/* Account dropdown */}
+            <div ref={accountRef} style={{ position: 'relative' }}>
+              <button
+                className="btn p-0 border-0 d-flex align-items-center gap-1 default-color nav-font-size"
+                onClick={() => setAccountOpen((prev) => !prev)}
+                aria-label="Account"
+                style={{ background: 'none', cursor: 'pointer' }}
+              >
+                👤 <span style={{ fontSize: 13 }}>{user?.name || 'حسابي'}</span>
+                <span style={{ fontSize: 10, marginTop: 2 }}>▾</span>
+              </button>
+              {accountOpen && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '110%',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: '#fff',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: 10,
+                    boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+                    minWidth: 200,
+                    zIndex: 1050,
+                    padding: '16px',
+                    textAlign: 'center',
+                  }}
+                >
+                  <div style={{ fontSize: 36, marginBottom: 6 }}>👤</div>
+                  <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 2 }}>{user?.name}</div>
+                  <div style={{ color: '#6b7280', fontSize: 13, marginBottom: 4 }}>{user?.email}</div>
+                  <div style={{ color: '#9ca3af', fontSize: 12, marginBottom: 12 }}>{user?.role}</div>
+                  <button
+                    className="btn btn-sm w-100"
+                    onClick={handleLogout}
+                    style={{
+                      background: '#ef4444',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: 8,
+                      fontWeight: 600,
+                      padding: '6px 0',
+                    }}
+                  >
+                    تسجيل الخروج
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Menu (desktop) */}
@@ -213,10 +283,19 @@ export default function Navbar() {
                 🛒 السلة
               </Link>
             </div>
-            <div className="nav__item" aria-expanded="false">
-              <Link className="nav__btn fw-semibold default-color text-decoration-none" to="/auth/login" onClick={() => setOffcanvasOpen(false)}>
-                👤 تسجيل الدخول
-              </Link>
+            {/* User info + logout (mobile) */}
+            <div className="nav__item" aria-expanded="false" style={{ borderTop: '1px solid #e5e7eb', paddingTop: 12, marginTop: 8 }}>
+              <div style={{ padding: '8px 0' }}>
+                <div style={{ fontWeight: 700, fontSize: 15 }}>👤 {user?.name}</div>
+                <div style={{ color: '#6b7280', fontSize: 13 }}>{user?.email}</div>
+              </div>
+              <button
+                className="nav__btn fw-semibold text-decoration-none btn p-0 w-100 text-start"
+                style={{ color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer', fontSize: 15 }}
+                onClick={handleLogout}
+              >
+                🚪 تسجيل الخروج
+              </button>
             </div>
           </div>
         </div>
