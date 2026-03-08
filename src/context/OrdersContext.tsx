@@ -28,7 +28,8 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
     setError(null);
     try {
       const res = await fetchOrdersApi();
-      setOrders(res.data.data);
+      const data = res.data?.data ?? res.data;
+      setOrders(Array.isArray(data) ? data : []);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to fetch orders');
     } finally {
@@ -43,9 +44,11 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
 
   const createOrder = useCallback(async (payload: OrderPayload): Promise<Order> => {
     const res = await createOrderApi(payload);
-    const newOrder = res.data.data;
-    setOrders((prev) => [newOrder, ...prev]);
-    return newOrder;
+    const newOrder = res.data?.data ?? res.data;
+    if (newOrder && typeof newOrder === 'object' && '_id' in newOrder) {
+      setOrders((prev) => [newOrder as Order, ...prev]);
+    }
+    return newOrder as Order;
   }, []);
 
   return (

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useCategories } from '../../context/CategoriesContext';
 import { useAuth } from '../../context/AuthContext';
+import { useCart } from '../../context/CartContext';
 import './Navbar.css';
 
 export default function Navbar() {
@@ -11,6 +12,7 @@ export default function Navbar() {
   const accountRef = useRef<HTMLDivElement>(null);
   const { categories, fetchCategories } = useCategories();
   const { user, logout } = useAuth();
+  const { totalItems } = useCart();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -63,8 +65,29 @@ export default function Navbar() {
 
           {/* Icons (desktop) */}
           <div className="top-icons d-none d-lg-flex align-items-center gap-4 ms-auto order-lg-3">
-            <NavLink to="/cart" className="text-decoration-none default-color mx-2 nav-font-size" aria-label="Cart">
+            <NavLink to="/cart" className="text-decoration-none default-color mx-2 nav-font-size" aria-label="Cart" style={{ position: 'relative' }}>
               🛒 <span style={{ fontSize: 13 }}>السلة</span>
+              {totalItems > 0 && (
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: -6,
+                    right: -10,
+                    background: '#ef4444',
+                    color: '#fff',
+                    fontSize: 10,
+                    fontWeight: 700,
+                    borderRadius: '50%',
+                    width: 18,
+                    height: 18,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {totalItems}
+                </span>
+              )}
             </NavLink>
 
             {/* Account dropdown */}
@@ -99,6 +122,22 @@ export default function Navbar() {
                   <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 2 }}>{user?.name}</div>
                   <div style={{ color: '#6b7280', fontSize: 13, marginBottom: 4 }}>{user?.email}</div>
                   <div style={{ color: '#9ca3af', fontSize: 12, marginBottom: 12 }}>{user?.role}</div>
+                  <Link
+                    to="/orders"
+                    onClick={() => setAccountOpen(false)}
+                    className="btn btn-sm w-100 mb-2"
+                    style={{
+                      background: '#1b8354',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: 8,
+                      fontWeight: 600,
+                      padding: '6px 0',
+                      textDecoration: 'none',
+                    }}
+                  >
+                    📦 طلباتي
+                  </Link>
                   <button
                     className="btn btn-sm w-100"
                     onClick={handleLogout}
@@ -280,7 +319,13 @@ export default function Navbar() {
             {/* Auth / Cart */}
             <div className="nav__item" aria-expanded="false">
               <Link className="nav__btn fw-semibold default-color text-decoration-none" to="/cart" onClick={() => setOffcanvasOpen(false)}>
-                🛒 السلة
+                🛒 السلة {totalItems > 0 && <span style={{ background: '#ef4444', color: '#fff', fontSize: 11, borderRadius: '50%', padding: '2px 7px', marginInlineStart: 6 }}>{totalItems}</span>}
+              </Link>
+            </div>
+            {/* Orders (mobile) */}
+            <div className="nav__item" aria-expanded="false">
+              <Link className="nav__btn fw-semibold default-color text-decoration-none" to="/orders" onClick={() => setOffcanvasOpen(false)}>
+                📦 طلباتي
               </Link>
             </div>
             {/* User info + logout (mobile) */}
@@ -288,6 +333,7 @@ export default function Navbar() {
               <div style={{ padding: '8px 0' }}>
                 <div style={{ fontWeight: 700, fontSize: 15 }}>👤 {user?.name}</div>
                 <div style={{ color: '#6b7280', fontSize: 13 }}>{user?.email}</div>
+                <div style={{ color: '#9ca3af', fontSize: 12 }}>{user?.role}</div>
               </div>
               <button
                 className="nav__btn fw-semibold text-decoration-none btn p-0 w-100 text-start"

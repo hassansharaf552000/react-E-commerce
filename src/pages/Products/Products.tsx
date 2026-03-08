@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useProducts } from '../../context/ProductsContext';
 import { useCategories } from '../../context/CategoriesContext';
 import { useSubCategories } from '../../context/SubCategoriesContext';
+import { useCart } from '../../context/CartContext';
 import fallbackImg from '../../assets/shopping.webp';
 
 export default function Products() {
@@ -14,6 +15,7 @@ export default function Products() {
   const { products, totalCount, fetchProducts, loading, error } = useProducts();
   const { categories, fetchCategories } = useCategories();
   const { subCategories, fetchSubCategories } = useSubCategories();
+  const { addToCart, items: cartItems } = useCart();
 
   const [page, setPage] = useState(1);
   const [searchInput, setSearchInput] = useState(search);
@@ -511,8 +513,13 @@ export default function Products() {
                         opacity: product.stock === 0 ? 0.5 : 1,
                       }}
                       disabled={product.stock === 0}
+                      onClick={() => addToCart(product)}
                     >
-                      {product.stock === 0 ? 'غير متوفر' : '🛒 أضف إلى السلة'}
+                      {product.stock === 0
+                        ? 'غير متوفر'
+                        : cartItems.some((ci) => ci.product._id === product._id)
+                          ? '✓ في السلة — أضف المزيد'
+                          : '🛒 أضف إلى السلة'}
                     </button>
                   </div>
                 </div>

@@ -3,6 +3,7 @@ import { CategoriesProvider } from './CategoriesContext';
 import { SubCategoriesProvider } from './SubCategoriesContext';
 import { ProductsProvider } from './ProductsContext';
 import { OrdersProvider } from './OrdersContext';
+import { CartProvider } from './CartContext';
 
 export const AppProviders = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -11,7 +12,9 @@ export const AppProviders = ({ children }: { children: React.ReactNode }) => {
         <SubCategoriesProvider>
           <ProductsProvider>
             <OrdersProvider>
-              {children}
+              <CartProvider>
+                {children}
+              </CartProvider>
             </OrdersProvider>
           </ProductsProvider>
         </SubCategoriesProvider>

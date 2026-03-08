@@ -6,6 +6,7 @@ import Products from './pages/Products/Products';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
 import Cart from './pages/Cart/Cart';
+import Orders from './pages/Orders/Orders';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import Notfound from './components/Notfound/Notfound';
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
       { path: 'about', element: <About /> },
       { path: 'contact', element: <Contact /> },
       { path: 'cart', element: <Cart /> },
+      { path: 'orders', element: <Orders /> },
     ],
   },
   { path: 'auth/login', element: <Login /> },
