@@ -1,6 +1,6 @@
-import styles from './TemplateName.module.css';
+import styles from './TemplateName';
 export default function TemplateName() {
   return (
-    <div>TemplateName</div>
+    <div >TemplateName</div>
   )
 }
